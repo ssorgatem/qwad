@@ -1,0 +1,11 @@
+[Desktop Entry]
+Name=Qwad
+Comment=Wad packer and unpacker
+Comment[es]=Empaquetador y desempaquetador de wads
+Comment[ca]=empaquetador i desempaquetador de wads
+Exec=/usr/bin/qwad
+Terminal=false
+Type=Application
+Icon=/usr/share/pixmaps/wad.png
+Categories=Application;Development
+StartupNotify=true
