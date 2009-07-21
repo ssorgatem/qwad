@@ -1,0 +1,7 @@
+CHANGELOG
+
+-- 0.1.1 Now with a windows port! --
+Fixed open modes and paths in order to work in Windows
+Independization from Wii Signer, due to needed changes to the original code. Now Qwad isn't a frontend anymore.
+
+-- 0.1 - initial version --

@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE Session SYSTEM "Session-4.3.dtd">
+<!-- eric4 session file for project Qwad -->
+<!-- This file was generated automatically, do not edit. -->
+<!-- Saved: 2009-07-21, 00:29:31 -->
+<Session version="4.3">
+  <Filenames>
+    <Filename cline="0" cindex="0" folds="">/home/ssorgatem/Documents/python/Qwad/Qwad.pyw</Filename>
+    <Filename cline="56" cindex="15" folds="">/home/ssorgatem/Documents/python/Qwad/TitleIDs.py</Filename>
+    <Filename cline="300" cindex="19" folds="1,49,84,115,142,254,351">/home/ssorgatem/Documents/python/Qwad/examinar/updatedownloader.c</Filename>
+    <Filename cline="38" cindex="291" folds="9,30,69,88,137,151,173,211">/home/ssorgatem/Documents/python/Qwad/wii_signer/wii.py</Filename>
+    <Filename cline="813" cindex="57" folds="31,43,51,57,64,153,161,259,325,336,344,352,372,416,425,432,487,501,518,549,566,585,599,710,1014,1042,1080,1199,1217,1229,1249,1260,1366,1383,1401,1416,1421,1426,1437,1449,1461,1476,1486,1493,1509,1515,1535,1611,1677,1718,1776,1791,1828,1843,1849,1860,1873,1906,1922,1943,1999,2043,2102,2108,2115,2121,2136,2154,2175,2183,2201,2249,2260,2288,2304,2320,2335,2377,2382,2398,2654,2673,2686,2694,2711,2716">/home/ssorgatem/Documents/python/Qwad/examinar/NUSDownloader.cs</Filename>
+  </Filenames>
+  <ActiveWindow cline="300" cindex="19">/home/ssorgatem/Documents/python/Qwad/examinar/updatedownloader.c</ActiveWindow>
+  <Breakpoints>
+  </Breakpoints>
+  <Watchexpressions>
+  </Watchexpressions>
+  <DebugInfo>
+    <CommandLine></CommandLine>
+    <WorkingDirectory></WorkingDirectory>
+    <Environment></Environment>
+    <ReportExceptions value="True" />
+    <Exceptions>
+    </Exceptions>
+    <IgnoredExceptions>
+    </IgnoredExceptions>
+    <AutoClearShell value="True" />
+    <TracePython value="False" />
+    <AutoContinue value="True" />
+    <CovexcPattern></CovexcPattern>
+  </DebugInfo>
+  <Bookmarks>
+  </Bookmarks>
+</Session>
