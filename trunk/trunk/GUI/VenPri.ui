@@ -6,12 +6,24 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>351</width>
-    <height>222</height>
+    <width>481</width>
+    <height>296</height>
    </rect>
   </property>
+  <property name="minimumSize">
+   <size>
+    <width>481</width>
+    <height>296</height>
+   </size>
+  </property>
+  <property name="maximumSize">
+   <size>
+    <width>481</width>
+    <height>296</height>
+   </size>
+  </property>
   <property name="windowTitle">
-   <string>Qwad - Empaquetador y desempaquetador de WADs</string>
+   <string>Qwad - a WAD management tool</string>
   </property>
   <property name="windowIcon">
    <iconset resource="../Qwad.qrc">
@@ -26,25 +38,25 @@
      <rect>
       <x>0</x>
       <y>0</y>
-      <width>351</width>
-      <height>201</height>
+      <width>481</width>
+      <height>251</height>
      </rect>
     </property>
     <property name="acceptDrops">
      <bool>false</bool>
     </property>
     <property name="currentIndex">
-     <number>0</number>
+     <number>2</number>
     </property>
-    <widget class="QWidget" name="tab">
+    <widget class="QWidget" name="unpacktab">
      <attribute name="title">
-      <string>Desempaquetar</string>
+      <string>Unpack WAD</string>
      </attribute>
      <widget class="QLineEdit" name="MuestraRutaWad">
       <property name="geometry">
        <rect>
-        <x>90</x>
-        <y>10</y>
+        <x>160</x>
+        <y>40</y>
         <width>241</width>
         <height>26</height>
        </rect>
@@ -53,8 +65,8 @@
      <widget class="QToolButton" name="BotonRutaWad">
       <property name="geometry">
        <rect>
-        <x>0</x>
-        <y>10</y>
+        <x>70</x>
+        <y>40</y>
         <width>91</width>
         <height>25</height>
        </rect>
@@ -63,14 +75,14 @@
        <string>Ruta hacia el archivo WAD que quieres desempaquetar</string>
       </property>
       <property name="text">
-       <string>Archivo WAD</string>
+       <string>WAD file</string>
       </property>
      </widget>
      <widget class="QLineEdit" name="MuestraRutaExtraer">
       <property name="geometry">
        <rect>
-        <x>90</x>
-        <y>90</y>
+        <x>160</x>
+        <y>110</y>
         <width>241</width>
         <height>26</height>
        </rect>
@@ -79,8 +91,8 @@
      <widget class="QToolButton" name="BotonRutaExtraer">
       <property name="geometry">
        <rect>
-        <x>0</x>
-        <y>90</y>
+        <x>70</x>
+        <y>110</y>
         <width>91</width>
         <height>25</height>
        </rect>
@@ -89,7 +101,7 @@
        <string>Carpeta donde se almacenaran los contenidos del archivo WAD</string>
       </property>
       <property name="text">
-       <string>Destino</string>
+       <string>Output</string>
       </property>
       <property name="autoRaise">
        <bool>false</bool>
@@ -101,48 +113,26 @@
      <widget class="QPushButton" name="Desempaqueta">
       <property name="geometry">
        <rect>
-        <x>110</x>
-        <y>130</y>
+        <x>170</x>
+        <y>180</y>
         <width>121</width>
         <height>25</height>
        </rect>
       </property>
       <property name="text">
-       <string>Desempaquetar</string>
+       <string>Unpack</string>
       </property>
      </widget>
     </widget>
-    <widget class="QWidget" name="tab_3">
+    <widget class="QWidget" name="packtab">
      <attribute name="title">
-      <string>Empaquetar</string>
+      <string>Pack WAD</string>
      </attribute>
-     <widget class="QCheckBox" name="updateTMD">
-      <property name="enabled">
-       <bool>true</bool>
-      </property>
-      <property name="geometry">
-       <rect>
-        <x>20</x>
-        <y>50</y>
-        <width>121</width>
-        <height>23</height>
-       </rect>
-      </property>
-      <property name="toolTip">
-       <string>Sólo necesario en caso de que hayas modificado el WAD original</string>
-      </property>
-      <property name="text">
-       <string extracomment="Necesario si has modificado los contenido dels wad original">Actualizar TMD</string>
-      </property>
-      <property name="checked">
-       <bool>true</bool>
-      </property>
-     </widget>
      <widget class="QLineEdit" name="MuestraRutaEmpaquetado">
       <property name="geometry">
        <rect>
-        <x>90</x>
-        <y>90</y>
+        <x>160</x>
+        <y>110</y>
         <width>241</width>
         <height>26</height>
        </rect>
@@ -151,8 +141,8 @@
      <widget class="QLineEdit" name="MuestraRutaDesempaquetado">
       <property name="geometry">
        <rect>
-        <x>90</x>
-        <y>10</y>
+        <x>160</x>
+        <y>40</y>
         <width>241</width>
         <height>26</height>
        </rect>
@@ -161,8 +151,8 @@
      <widget class="QToolButton" name="BotonRutaEmpaquetado">
       <property name="geometry">
        <rect>
-        <x>0</x>
-        <y>90</y>
+        <x>70</x>
+        <y>110</y>
         <width>91</width>
         <height>25</height>
        </rect>
@@ -171,7 +161,7 @@
        <string>Carpeta y nombre del nuevo WAD</string>
       </property>
       <property name="text">
-       <string>Destino</string>
+       <string>Output</string>
       </property>
       <property name="autoRaise">
        <bool>false</bool>
@@ -183,8 +173,8 @@
      <widget class="QToolButton" name="BotonRutaDesempaquetado">
       <property name="geometry">
        <rect>
-        <x>0</x>
-        <y>10</y>
+        <x>70</x>
+        <y>40</y>
         <width>91</width>
         <height>25</height>
        </rect>
@@ -193,20 +183,203 @@
        <string>Ruta hacia la carpeta que empaquetar en WAD</string>
       </property>
       <property name="text">
-       <string>Carpeta</string>
+       <string>Folder</string>
       </property>
      </widget>
      <widget class="QPushButton" name="Empaqueta">
       <property name="geometry">
        <rect>
-        <x>110</x>
-        <y>130</y>
+        <x>170</x>
+        <y>180</y>
         <width>121</width>
         <height>25</height>
        </rect>
       </property>
       <property name="text">
-       <string>Empaquetar</string>
+       <string>Pack</string>
+      </property>
+     </widget>
+    </widget>
+    <widget class="QWidget" name="NUStab">
+     <attribute name="title">
+      <string>Download from NUS</string>
+     </attribute>
+     <widget class="QLineEdit" name="NusOutputPath">
+      <property name="geometry">
+       <rect>
+        <x>140</x>
+        <y>150</y>
+        <width>241</width>
+        <height>26</height>
+       </rect>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="Download_from_NUS">
+      <property name="geometry">
+       <rect>
+        <x>170</x>
+        <y>180</y>
+        <width>121</width>
+        <height>25</height>
+       </rect>
+      </property>
+      <property name="locale">
+       <locale language="English" country="UnitedStates"/>
+      </property>
+      <property name="text">
+       <string>Download</string>
+      </property>
+     </widget>
+     <widget class="QToolButton" name="NusOutputButton">
+      <property name="geometry">
+       <rect>
+        <x>40</x>
+        <y>150</y>
+        <width>91</width>
+        <height>25</height>
+       </rect>
+      </property>
+      <property name="toolTip">
+       <string>Carpeta y nombre del nuevo WAD</string>
+      </property>
+      <property name="locale">
+       <locale language="English" country="UnitedStates"/>
+      </property>
+      <property name="text">
+       <string>Output</string>
+      </property>
+      <property name="autoRaise">
+       <bool>false</bool>
+      </property>
+      <property name="arrowType">
+       <enum>Qt::NoArrow</enum>
+      </property>
+     </widget>
+     <widget class="QLineEdit" name="enteredTitleID">
+      <property name="geometry">
+       <rect>
+        <x>125</x>
+        <y>45</y>
+        <width>161</width>
+        <height>31</height>
+       </rect>
+      </property>
+      <property name="locale">
+       <locale language="English" country="UnitedStates"/>
+      </property>
+      <property name="text">
+       <string>000000000000000000</string>
+      </property>
+     </widget>
+     <widget class="QLabel" name="TitleIDlabel">
+      <property name="geometry">
+       <rect>
+        <x>15</x>
+        <y>51</y>
+        <width>101</width>
+        <height>20</height>
+       </rect>
+      </property>
+      <property name="locale">
+       <locale language="English" country="UnitedStates"/>
+      </property>
+      <property name="text">
+       <string>Title ID</string>
+      </property>
+      <property name="alignment">
+       <set>Qt::AlignRight|Qt::AlignTop|Qt::AlignTrailing</set>
+      </property>
+     </widget>
+     <widget class="QLabel" name="Title">
+      <property name="geometry">
+       <rect>
+        <x>0</x>
+        <y>10</y>
+        <width>121</width>
+        <height>21</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Choose title:</string>
+      </property>
+      <property name="alignment">
+       <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+      </property>
+     </widget>
+     <widget class="QComboBox" name="comboBox">
+      <property name="geometry">
+       <rect>
+        <x>125</x>
+        <y>10</y>
+        <width>291</width>
+        <height>25</height>
+       </rect>
+      </property>
+      <item>
+       <property name="text">
+        <string>Custom title ID</string>
+       </property>
+      </item>
+     </widget>
+     <widget class="QCheckBox" name="decryptCheck">
+      <property name="enabled">
+       <bool>false</bool>
+      </property>
+      <property name="geometry">
+       <rect>
+        <x>130</x>
+        <y>80</y>
+        <width>171</width>
+        <height>23</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Decrypt</string>
+      </property>
+      <property name="checked">
+       <bool>false</bool>
+      </property>
+     </widget>
+     <widget class="QCheckBox" name="pack_in_WAD_checkbox">
+      <property name="geometry">
+       <rect>
+        <x>130</x>
+        <y>110</y>
+        <width>181</width>
+        <height>23</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Pack into WAD</string>
+      </property>
+      <property name="checked">
+       <bool>true</bool>
+      </property>
+     </widget>
+     <widget class="QLineEdit" name="VersionlineEdit">
+      <property name="geometry">
+       <rect>
+        <x>340</x>
+        <y>45</y>
+        <width>71</width>
+        <height>31</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>unset</string>
+      </property>
+     </widget>
+     <widget class="QLabel" name="versionlabel">
+      <property name="geometry">
+       <rect>
+        <x>290</x>
+        <y>50</y>
+        <width>51</width>
+        <height>20</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Version:</string>
       </property>
      </widget>
     </widget>
@@ -217,27 +390,27 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>351</width>
+     <width>481</width>
      <height>22</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuAyuda">
     <property name="title">
-     <string>Ayuda</string>
+     <string>Help</string>
     </property>
     <addaction name="actionAcerca_de_Qwad"/>
     <addaction name="actionAbout_Qt"/>
-    <addaction name="actionAbout_Wii_Signer"/>
    </widget>
    <addaction name="menuAyuda"/>
   </widget>
+  <widget class="QStatusBar" name="statusBar"/>
   <action name="actionAcerca_de_Qwad">
    <property name="icon">
     <iconset resource="../Qwad.qrc">
      <normaloff>:/icons/wad.png</normaloff>:/icons/wad.png</iconset>
    </property>
    <property name="text">
-    <string>Acerca de Qwad</string>
+    <string>About Qwad</string>
    </property>
   </action>
   <action name="actionAbout_Qt">
