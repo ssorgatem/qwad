@@ -10,7 +10,7 @@ from PyQt4.QtCore import pyqtSignature
 from Ui_AboutQwad import Ui_Dialog
 
 def Version():
-    return "0.1.1"
+    return "0.2"
 def Author():
     return "ssorgatem <ssorgatem@esdebian.org>"
 

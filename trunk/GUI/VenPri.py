@@ -1,14 +1,18 @@
 # -*- coding: utf-8 -*-
-
 """
-Module implementing MWQwad.
+Module implementing Qwad's main window
 """
-from wii_signer import wiiw
-from PyQt4.QtGui import QMainWindow,QFileDialog,QMessageBox
-from PyQt4.QtCore import pyqtSignature,QString
-import os
-
+from PyQt4.QtGui import QMainWindow,QFileDialog,QMessageBox, QLabel
+from PyQt4.QtCore import pyqtSignature,QString,QT_TR_NOOP,SIGNAL,QObject
+from WiiPy.archive import WAD
+from WiiPy.title import NUS
 from Ui_VenPri import Ui_Qwad
+from shutil import rmtree
+from threading import Thread
+import TitleIDs
+import tempfile, os, time
+
+CWD = os.getcwd()
 
 class MWQwad(QMainWindow, Ui_Qwad):
     """
@@ -20,15 +24,32 @@ class MWQwad(QMainWindow, Ui_Qwad):
         """
         QMainWindow.__init__(self, parent)
         self.setupUi(self)
+        self.defaultversion = self.trUtf8("""(Latest)""")
+        self.VersionlineEdit.setText(self.defaultversion)
+        for key in TitleIDs.TitleDict.keys():
+            self.comboBox.addItem(key)
+        self.getReady()
 
-    def ErrorDiag(self):
-                    QMessageBox.critical(None,
+    def Status(self,status):
+        print status
+        self.setEnabled(False)
+        self.statusBar.showMessage(status)
+
+    def getReady(self):
+        self.setEnabled(True)
+        self.statusBar.showMessage(self.trUtf8("Ready"))
+        os.chdir(CWD)
+        print "Done."
+
+
+    def ErrorDiag(self, error = QT_TR_NOOP("Unknown error")):
+            QMessageBox.critical(None,
                 self.trUtf8("Error"),
-                self.trUtf8("""An error has ocurred. Probably missing arguments.
-Please, see the output of stderr for more help (run Qwad from command line)"""),
+                self.trUtf8("""An error has ocurred:""") +" " + str(error),
                 QMessageBox.StandardButtons(\
-                    QMessageBox.Ok),
+                QMessageBox.Ok),
                 QMessageBox.Ok)
+            print error
 
     @pyqtSignature("")
     def on_BotonRutaWad_clicked(self):
@@ -37,7 +58,7 @@ Please, see the output of stderr for more help (run Qwad from command line)"""),
         """
         WadPath = QFileDialog.getOpenFileName(\
             None,
-            self.trUtf8("Selecciona el archivo WAD"),
+            self.trUtf8("Select WAD file"),
             QString(),
             self.trUtf8("*.wad; *.WAD"),
             None)
@@ -51,7 +72,7 @@ Please, see the output of stderr for more help (run Qwad from command line)"""),
         """
         OutputDir = QFileDialog.getExistingDirectory(\
             None,
-            self.trUtf8("Selecciona dónde guardar el contenido del WAD"),
+            self.trUtf8("Select where to store WAD contents"),
             QString(),
             QFileDialog.Options(QFileDialog.ShowDirsOnly))
         if OutputDir != "":
@@ -62,16 +83,11 @@ Please, see the output of stderr for more help (run Qwad from command line)"""),
         """
         Unpack wad
         """
-        OLDDIR = os.getcwd()
         try:
-            if self.MuestraRutaExtraer.text() != "":
-                os.chdir(str(self.MuestraRutaExtraer.text()))
-            wiiw.extract(self.MuestraRutaWad.text())
-            if os.getcwd() != OLDDIR:
-                os.chdir(OLDDIR)
+            self.unpack = Unpacking(str(self.MuestraRutaWad.text()), str(self.MuestraRutaExtraer.text()), self)
+            self.unpack.start()
         except Exception, e:
-            self.ErrorDiag()
-            print e
+            self.ErrorDiag(e)
 
     @pyqtSignature("")
     def on_BotonRutaEmpaquetado_clicked(self):
@@ -80,7 +96,7 @@ Please, see the output of stderr for more help (run Qwad from command line)"""),
         """
         NewWadPath = QFileDialog.getSaveFileName(\
             None,
-            self.trUtf8("Selecciona dónde guardar el nuevo WAD"),
+            self.trUtf8("Select where to save the newly created WAD"),
             QString("output.wad"),
             self.trUtf8("*.wad; *.WAD"),
             None)
@@ -94,7 +110,7 @@ Please, see the output of stderr for more help (run Qwad from command line)"""),
         """
         Dir2Wad = QFileDialog.getExistingDirectory(\
             None,
-            self.trUtf8("Selecciona el directorio a partir del cual crear un WAD"),
+            self.trUtf8("Select folder to pack into WAD"),
             QString(),
             QFileDialog.Options(QFileDialog.ShowDirsOnly))
         if Dir2Wad != "":
@@ -105,16 +121,13 @@ Please, see the output of stderr for more help (run Qwad from command line)"""),
         """
         Create WAD
         """
+        self.setEnabled(False)
         try:
-            if self.updateTMD.checkState() == 2:
-                print "updating TMD"
-                wiiw.update(str(self.MuestraRutaDesempaquetado.text()))
-            else:
-                print "not updating TMD"
-            wiiw.packdir(str(self.MuestraRutaDesempaquetado.text()),str(self.MuestraRutaEmpaquetado.text()))
+            self.packing = Packing(str(self.MuestraRutaDesempaquetado.text()),str(self.MuestraRutaEmpaquetado.text()), self)
+            self.packing.start()
         except Exception, e:
-            self.ErrorDiag()
-            print e
+            self.ErrorDiag(e)
+        self.setEnabled(True)
 
     @pyqtSignature("")
     def on_actionAcerca_de_Qwad_triggered(self):
@@ -134,10 +147,151 @@ Please, see the output of stderr for more help (run Qwad from command line)"""),
             self.trUtf8("About Qt"))
 
     @pyqtSignature("")
-    def on_actionAbout_Wii_Signer_triggered(self):
+    def on_Download_from_NUS_clicked(self):
         """
-        About Wii Signer
+        Start doing the actual work... well, in fact, the actual work is done by Wii.py
         """
-        from AboutWiiSigner import AboutWiiSigner
-        Pop = AboutWiiSigner()
-        Pop.exec_()
+        try:
+            version = self.VersionlineEdit.text()
+            if  version == self.defaultversion:
+                print "downloading latest version"
+                version = None
+            else:
+                version = str(version)
+                print "downloading version " + version
+#            if self.pack_in_WAD_checkbox.isChecked():
+#                outputdir = tempfile.gettempdir() + "/NUS_" #+ time.asctime().replace(",","").replace(" ","").replace(":","") # A safe place for temporary files
+#            else:
+            outputdir = str(self.NusOutputPath.text())
+            self.nusdow = nusDownloading(int(str(self.enteredTitleID.text()),16), version, outputdir,  self.decryptCheck.isChecked(), self)
+            self.nusdow.start()
+        except Exception, e:
+            self.ErrorDiag(e)
+
+    @pyqtSignature("")
+    def on_NusOutputButton_clicked(self):
+        """
+        Selects the output path
+        """
+        if self.pack_in_WAD_checkbox.isChecked():
+            outputdir = QFileDialog.getSaveFileName(\
+                None,
+                self.trUtf8("Select where to save the downloaded WAD"),
+                QString(),
+                self.trUtf8("*.wad; *.WAD"),
+                None)
+        else:
+            outputdir = QFileDialog.getExistingDirectory(\
+                None,
+                self.trUtf8("Select the directory where store the downloaded files"),
+                QString(),
+                QFileDialog.Options(QFileDialog.ShowDirsOnly))
+        if outputdir != "":
+            self.NusOutputPath.setText(outputdir)
+
+    @pyqtSignature("QString")
+    def on_comboBox_currentIndexChanged(self, selection):
+        """
+        Show the title ID of the selected title
+        """
+        if self.comboBox.findText(selection) != 0:
+            self.enteredTitleID.enabled = False
+            self.enteredTitleID.setText(TitleIDs.TitleDict[str(selection)])
+
+    @pyqtSignature("")
+    def on_enteredTitleID_returnPressed(self):
+        """
+        Place combobox un custom titleid
+        """
+        self.comboBox.setCurrentIndex(0)
+
+    @pyqtSignature("int")
+    def on_pack_in_WAD_checkbox_stateChanged(self, state):
+        """
+        Clear output path, because we change output type
+        """
+        self.NusOutputPath.clear()
+        if state == 2:
+            self.decryptCheck.setChecked(False)
+            self.decryptCheck.setEnabled(False)
+        elif state == 0:
+            self.decryptCheck.setChecked(True)
+            self.decryptCheck.setEnabled(True)
+        elif state == 1:
+            print "OMG, what are you doing?"
+        else:
+            print "This is the end of the world. For PyQt4, at least"
+#Statusbar messages
+#FIXME: Why don't they get translated? It's frustrating
+DOWNLOADING = QT_TR_NOOP("Downloading files from NUS... This may take a while, please, be patient.")
+UNPACKING = QT_TR_NOOP("Unpacking WAD...")
+PACKING = QT_TR_NOOP("Packing into WAD...")
+CLEANING = QT_TR_NOOP("Cleaning temporary files...")
+#Here useful thread classes
+class Unpacking(Thread):
+    def __init__(self, wadpath, dirpath, QMW):
+        Thread.__init__(self)
+        self.wadpath = wadpath
+        self.dirpath = dirpath
+        self.QMW = QMW
+        self.qobject = QObject()
+        self.qobject.connect(self.qobject, SIGNAL("working"),self.QMW.Status)
+        self.qobject.connect(self.qobject, SIGNAL("Exception"),self.QMW.ErrorDiag)
+        self.qobject.connect(self.qobject, SIGNAL("Done"),self.QMW.getReady)
+    def run(self):
+        self.qobject.emit(SIGNAL("working"),UNPACKING)
+        try:
+            WAD.loadFile(self.wadpath).dumpDir(self.dirpath)
+        except Exception, e:
+            print e
+            self.qobject.emit(SIGNAL("Exception"),e)
+        self.qobject.emit(SIGNAL("Done"))
+
+class Packing(Unpacking):
+    def __init__(self, dirpath, wadpath, QMW, deletedir = False):
+        Unpacking.__init__(self, wadpath, dirpath, QMW)
+        self.deletedir = deletedir
+    def run(self):
+        self.qobject.emit(SIGNAL("working"),PACKING)
+        try:
+            print self.dirpath
+            print self.wadpath
+            WAD.loadDir(self.dirpath).dumpFile(self.wadpath)
+            if self.deletedir:
+                print "Cleaning temporary files"
+                self.qobject.emit(SIGNAL("working"),CLEANING)
+                rmtree(self.dirpath)
+        except Exception, e:
+            if self.deletedir:
+                print "Cleaning temporary files"
+                self.qobject.emit(SIGNAL("working"),CLEANING)
+                rmtree(self.dirpath)
+            print e
+            self.qobject.emit(SIGNAL("Exception"),e)
+        self.qobject.emit(SIGNAL("Done"))
+
+class nusDownloading(Unpacking):
+    def __init__(self, titleid, version, outputdir, decrypt, QMW):
+        Unpacking.__init__(self, None, outputdir, QMW)
+        if version != None:
+            self.version = int(version)
+        else:
+            self.version = None
+        self.decrypt = decrypt
+        self.titleid = titleid
+    def run(self):
+        self.qobject.emit(SIGNAL("working"),DOWNLOADING)
+        try:
+            if self.QMW.pack_in_WAD_checkbox.isChecked():
+                self.dirpath = tempfile.gettempdir() + "/NUS_"+ str(time.time()).replace(".","") # A safe place for temporary files
+                NUS(self.titleid,self.version).download(self.dirpath, decrypt = self.decrypt)
+                self.packing = Packing(self.dirpath, str(self.QMW.NusOutputPath.text()), self.QMW, True)
+                self.packing.start()
+            else:
+                NUS(self.titleid,self.version).download(self.dirpath, decrypt = self.decrypt)
+                self.qobject.emit(SIGNAL("Done"))
+        except Exception, e:
+            print e
+            Errormsg = str(e) + ". " +  QT_TR_NOOP(QString("Title %1 version %2 maybe isn't available for download on NUS.").arg(str(self.titleid)).arg(str(self.version)))
+            self.qobject.emit(SIGNAL("Exception"),Errormsg)
+            self.qobject.emit(SIGNAL("Done"))
