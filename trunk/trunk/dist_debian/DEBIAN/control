@@ -1,8 +1,0 @@
-Package: qwad
-Version: 0.1.1
-Section: devel
-Maintainer: Adrián Cereto Massagué <ssorgatem@esdebian.org>
-Architecture: all
-Depends: python-qt4, python-crypto
-Description: Grafical tool for packing and unpacking WADs
- Qwad is a based on Wii Signer
