@@ -1,3 +1,6 @@
+This script is not inteended to be used. It's just for testing purposes.
+
+
 #!/bin/sh
 #makeqwaddeb#
 VERSION=$1

@@ -1,7 +1,19 @@
 CHANGELOG
 
+-- 0.2 --
+Major rewrite and refactoring of code.
+
+*Backend changed from Wii Signer to the awesome Wii.py
+*Added support form downloading and packing wads from NUS
+*Added statusbar
+*Now the backend runs in a different thread
+
+Known bugs:
+*Title names amb some statusbar messages don't get translated
+*Title dictionary is incomplete. Additionally, there may be titles in the combobox which aren't actually in the NUS.
+
 -- 0.1.1 Now with a windows port! --
 Fixed open modes and paths in order to work in Windows
 Independization from Wii Signer, due to needed changes to the original code. Now Qwad isn't a frontend anymore.
 
--- 0.1 - initial version --
+-- 0.1 - Firs public version --
