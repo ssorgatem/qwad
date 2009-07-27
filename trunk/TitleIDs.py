@@ -2,7 +2,7 @@
 """
 module storing a titleid dictionary
 """
-import binascii
+import binascii, re
 from PyQt4.QtCore import QT_TR_NOOP
 
 TitleDict = {
@@ -31,6 +31,14 @@ TitleDict = {
 "IOS35":"0000000100000023",
 "IOS36":"0000000100000024",
 "IOS37":"0000000100000025",
+"IOS38":"0000000100000026",
+"IOS50":"0000000100000032",
+"IOS51":"0000000100000033",
+"IOS53":"0000000100000035",
+"IOS55":"0000000100000037",
+"IOS60":"000000010000003c",
+"IOS61":"000000010000003d",
+"IOS254":"00000001000000fe",
 #TODO: Add remaining IOSes
 #QT_TR_NOOP("Wii Speak Channel"):"00010001484346xx",
 #QT_TR_NOOP("Photo Channel 1.1 [USA]"):"0001000148415a45",
@@ -56,9 +64,21 @@ QT_TR_NOOP("Photo Channel 1.1"):"001000248415941",
 #QT_TR_NOOP("News Channel-HAGA"):"0001000248414741"
 }
 
-idDict = {}
+#idDict = {}
+#for title in TitleDict:
+#    idDict[TitleDict[title]] = title
+
+IOSdict = {}
 for title in TitleDict:
-    idDict[TitleDict[title]] = title
+    if re.search("IOS", title):
+        IOSdict[title] = TitleDict[title]
+IOSdict["IOS202"] = "00000001000000ca"
+IOSdict["IOS222"] = "00000001000000de"
+IOSdict["IOS249"] = "00000001000000f9"
+
+IOSids = {}
+for ios in IOSdict:
+    IOSids[IOSdict[ios]] = ios
 
 def AsciiID(channelname):
     return binascii.unhexlify(TitleDict[channelname][7:])
