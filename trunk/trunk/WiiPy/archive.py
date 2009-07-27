@@ -24,15 +24,14 @@ class U8(WiiArchive):
 	def __init__(self):
 		self.files = []
 	def _dump(self):
-		"""This function will pack a folder into a U8 archive. The output file name is specified in the parameter fn. If fn is an empty string, the filename is deduced from the input folder name. Returns the output filename.
-		
-		This creates valid U8 archives for all purposes."""
 		header = self.U8Header()
 		rootnode = self.U8Node()
 		
+		# constants
 		header.tag = "U\xAA8-"
 		header.rootnode_offset = 0x20
 		header.zeroes = "\x00" * 16
+		rootnode.type = 0x0100
 		
 		nodes = []
 		strings = "\x00"
@@ -40,37 +39,35 @@ class U8(WiiArchive):
 		
 		for item, value in self.files:
 			node = self.U8Node()
-			node.name_offset = len(strings)
 			
 			recursion = item.count('/')
 			if(recursion < 0):
 				recursion = 0
 			name = item[item.rfind('/') + 1:]
+			
+			node.name_offset = len(strings)
 			strings += name + '\x00'
 		
 			if(value == None):
 				node.type = 0x0100
 				node.data_offset = recursion
 				
-				this_length = 0
+				node.size = len(nodes)
 				for one, two in self.files:
-					subdirs = one
-					if(subdirs.find(item) != -1):
-						this_length += 1
-				node.size = len(nodes) + this_length + 1
+					if(one[:len(item)] == item): # find nodes in the folder
+						node.size += 1
+				node.size += 1
 			else:
 				sz = len(value)
-				value += "\x00" * (align(sz, 32) - sz) #32 seems to work best for fuzzyness? I'm still really not sure
 				node.data_offset = len(data)
-				data += value
+				data += value + "\x00" * (align(sz, 32) - sz) # 32 seems to work best for fuzzyness? I'm still really not sure
 				node.size = sz
 				node.type = 0x0000
 			nodes.append(node)
 			
-		header.header_size = (len(nodes) + 1) * len(rootnode) + len(strings)
+		header.header_size = ((len(nodes) + 1) * len(rootnode)) + len(strings)
 		header.data_offset = align(header.header_size + header.rootnode_offset, 64)
 		rootnode.size = len(nodes) + 1
-		rootnode.type = 0x0100
 		
 		for i in range(len(nodes)):
 			if(nodes[i].type == 0x0000):

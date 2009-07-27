@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 from common import *
-#import wx
+import wx
 
 def flatten(myTuple):
 	if (len(myTuple) == 4):
@@ -33,12 +33,12 @@ def avg(w0, w1, c0, c1):
 
 class TPL():
 	"""This is the class to generate TPL texutres from PNG images, and to convert TPL textures to PNG images. The parameter file specifies the filename of the source, either a PNG image or a TPL image.
-
+	
 	Currently supported are the following formats to convert from TPL (all formats): RGBA8, RGB565, RGB5A3, I4, IA4, I8, IA8, CI4, CI8, CMP, CI14X2.
-
+	
 	Currently supported to convert to TPL: I4, I8, IA4, IA8, RBG565, RBGA8, RGB5A3. Currently not supported are CI4, CI8, CMP, CI14X2."""
-
-
+	
+	
 	class TPLHeader(Struct):
 		__endian__ = Struct.BE
 		def __format__(self):
@@ -73,7 +73,7 @@ class TPL():
 			self.format = Struct.uint32
 			self.offset = Struct.uint32
 	def __init__(self, file):
-		if(os.path.isfile(file)):
+		if(not ("\x00" in file) and os.path.isfile(file)):
 			self.file = file
 			self.data = None
 		else:
@@ -81,23 +81,23 @@ class TPL():
 			self.data = file
 	def toTPL(self, outfile, (width, height) = (None, None), format = "RGBA8"): #single texture only
 		"""This converts an image into a TPL. The image is specified as the file parameter to the class initializer, while the output filename is specified here as the parameter outfile. Width and height are optional parameters and specify the size to resize the image to, if needed. Returns the output filename.
-
+		
 		This only can create TPL images with a single texture."""
 		head = self.TPLHeader()
 		head.magic = 0x0020AF30
 		head.ntextures = 1
 		head.header_size = 0x0C
-
+		
 		tex = self.TPLTexture()
 		tex.header_offset = 0x14
 		tex.pallete_offset = 0
-
+		
 		img = Image.open(self.file)
 		theWidth, theHeight = img.size
 		if(width != None and height != None and (width != theWidth or height != theHeight)):
 			img = img.resize((width, height), Image.ANTIALIAS)
 		w, h = img.size
-
+		
 		texhead = self.TPLTextureHeader()
 		texhead.height = h
 		texhead.width = w
@@ -142,7 +142,7 @@ class TPL():
 			''' ADD toCMP '''
 			raise Exception("toCMP not done")
 			#tpldata = self.toCMP((w, h), img)
-
+			
 		texhead.data_off = 0x14 + len(texhead)
 		texhead.wrap = [0, 0]
 		texhead.filter = [1, 1]
@@ -151,7 +151,7 @@ class TPL():
 		texhead.min_lod = 0
 		texhead.max_lod = 0
 		texhead.unpacked = 0
-
+		
 		f = open(outfile, "wb")
 		f.write(head.pack())
 		f.write(tex.pack())
@@ -183,7 +183,7 @@ class TPL():
 			''' ADD toCMP '''
 			#f.write(struct.pack(">"+ str(align(w,4) * align(h,4) * 4) + "B", *tpldata))
 		f.close()
-
+		
 		return outfile
 	def toI4(self, (w, h), img):
 		out = [0 for i in range(align(w, 4) * align(h, 4) / 2)]
@@ -379,22 +379,22 @@ class TPL():
 		return out
 	def toImage(self, outfile):
 		"""This converts a TPL texture to a PNG image. You specify the input TPL filename in the initializer, and you specify the output filename in the outfile parameter to this method. Returns the output filename.
-
+		
 		This only supports single textured TPL images."""
 		if(self.file):
 			data = open(self.file, "rb").read()
 		else:
 			data = self.data
-
+		
 		header = self.TPLHeader()
 		textures = []
 		pos = 0
-
+		
 		header.unpack(data[pos:pos + len(header)])
 		pos += len(header)
-
+		
 		palette_offsets = []
-
+		
 		for i in range(header.ntextures):
 			tmp = self.TPLTexture()
 			tmp.unpack(data[pos:pos + len(tmp)])
@@ -402,10 +402,10 @@ class TPL():
 			pos += len(tmp)
 			if(tmp.palette_offset > 0):
 				palette_offsets.append(tmp.palette_offset)
-
+		
 		if(header.ntextures > 1):
 			raise ValueError("Only one texture supported. Don't touch me!")
-
+		
 		for i in range(header.ntextures):
 			head = textures[i]
 			tex = self.TPLTextureHeader()
@@ -416,14 +416,14 @@ class TPL():
 			if(tex.format == 0): #I4, 4-bit
 				tpldata = struct.unpack(">" + str((w * h) / 2) + "B", data[tex.data_off:tex.data_off + ((w * h) / 2)])
 				rgbdata = self.I4((w, h), tpldata)
-
+			
 			elif(tex.format == 1): #I8, 8-bit
 				tpldata = struct.unpack(">" + str(w * h) + "B", data[tex.data_off:tex.data_off + (w * h * 1)])
 				rgbdata = self.I8((w, h), tpldata)
 			elif(tex.format == 2): #IA4, 8-bit
 				tpldata = struct.unpack(">" + str(w * h) + "B", data[tex.data_off:tex.data_off + (w * h * 1)])
 				rgbdata = self.IA4((w, h), tpldata)
-
+			
 			elif(tex.format == 4): #RGB565, 16-bit
 				tpldata = data[tex.data_off:]
 				rgbdata = self.RGB565((w, h), tpldata)
@@ -433,11 +433,11 @@ class TPL():
 			elif(tex.format == 3): #IA8, 16-bit
 				tpldata = data[tex.data_off:]
 				rgbdata = self.IA8((w, h), tpldata)
-
+			
 			elif(tex.format == 6): #RGBA8, 32-bit, but for easyness's sake lets do it with 16-bit
 				tpldata = data[tex.data_off:]
 				rgbdata = self.RGBA8((w, h), tpldata)
-
+				
 			elif(tex.format == 8 or tex.format == 9 or tex.format == 10):
 				palhead = self.TPLPaletteHeader()
 				offs = palette_offsets.pop(0)
@@ -450,7 +450,7 @@ class TPL():
 					palette_data = self.RGB565((palhead.nitems, 1), tpldata)[0]
 				elif(palhead.format == 2):
 					palette_data = self.RGB5A3((palhead.nitems, 1), tpldata)[0]
-
+				
 				paldata = []
 				for i in range(0, palhead.nitems * 4, 4):
 					tmp = 0
@@ -459,7 +459,7 @@ class TPL():
 					tmp |= palette_data[i + 2] << 8
 					tmp |= palette_data[i + 3] << 0
 					paldata.append(tmp)
-
+				
 				if(tex.format == 8):
 					tpldata = struct.unpack(">" + str((w * h) / 2) + "B", data[tex.data_off:tex.data_off + ((w * h) / 2)])
 					rgbdata = self.CI4((w, h), tpldata, paldata)
@@ -471,33 +471,33 @@ class TPL():
 					rgbdata = self.CI14X2((w, h), tpldata, paldata)
 			elif(tex.format == 14):
 				tpldata = ''.join(data[tex.data_off:])
-
+				
 				rgbdata = self.CMP((w, h), tpldata)
 			else:
 				raise TypeError("Unsupported TPL Format: " + str(tex.format))
-
+		
 		output = Image.fromstring("RGBA", (w, h), rgbdata)
 		ext = outfile[outfile.rfind(".")+1:]
 		output.save(outfile, ext)
-
+		
 		return outfile
 	def getSizes(self):
 		"""This returns a tuple containing the width and height of the TPL image filename in the class initializer. Will only return the size of single textured TPL images."""
 		data = open(self.file, "rb").read()
-
+		
 		header = self.TPLHeader()
 		textures = []
 		pos = 0
-
+		
 		header.unpack(data[pos:pos + len(header)])
 		pos += len(header)
-
+		
 		for i in range(header.ntextures):
 			tmp = self.TPLTexture()
 			tmp.unpack(data[pos:pos + len(tmp)])
 			textures.append(tmp)
 			pos += len(tmp)
-
+		
 		for i in range(header.ntextures):
 			head = textures[i]
 			tex = self.TPLTextureHeader()
@@ -507,14 +507,14 @@ class TPL():
 		return (w, h)
 	def toScreen(self): #single texture only
 		"""This will draw a simple window with the TPL image displayed on it. It uses WxPython for the window creation and management. The window has a minimum width and height of 300 x 200. Does not return a value.
-
+		
 		Again, only a single texture is supported."""
 		import wx
 		class imp(wx.Dialog):
 			def __init__(self, title, im):
 				w = img.GetWidth()
 				h = img.GetHeight()
-
+				
 				wx.Dialog.__init__(self, None, -1, title, size = (max(w, 300), max(h, 200)))
 
 				wx.StaticBitmap(self, -1, im, ( ((max(w, 300) - w) / 2), ((max(h, 200) - h) / 2) ), (w, h))
@@ -558,7 +558,7 @@ class TPL():
 							continue
 						pixel = Struct.uint16(jar[i * 2:i * 2 + 2], endian='>')
 						i += 1
-
+						
 						if(pixel & (1 << 15)): #RGB555
 							b = (((pixel >> 10) & 0x1F) * 255) / 31
 							g = (((pixel >> 5) & 0x1F) * 255) / 31
@@ -584,7 +584,7 @@ class TPL():
 							continue
 						pixel = Struct.uint16(jar[i * 2:i * 2 + 2], endian='>')
 						i += 1
-
+						
 						b = (((pixel >> 11) & 0x1F) << 3) & 0xff
 						g = (((pixel >> 5) & 0x3F) << 2) & 0xff
 						r = (((pixel >> 0) & 0x1F) << 3) & 0xff
@@ -603,7 +603,7 @@ class TPL():
 						if(y1 >= h or x1 >= w):
 							continue
 						pixel = jar[i]
-
+						
 						r = (pixel >> 4) * 255 / 15
 						g = (pixel >> 4) * 255 / 15
 						b = (pixel >> 4) * 255 / 15
@@ -611,12 +611,12 @@ class TPL():
 
 						rgba = (r << 0) | (g << 8) | (b << 16) | (a << 24)
 						out[y1 * w + x1] = rgba
-
+						
 						if(y1 >= h or x1 >= w):
 							continue
 						pixel = jar[i]
 						i += 1
-
+						
 						r = (pixel & 0x0F) * 255 / 15
 						g = (pixel & 0x0F) * 255 / 15
 						b = (pixel & 0x0F) * 255 / 15
@@ -636,7 +636,7 @@ class TPL():
 							continue
 						pixel = jar[i]
 						i += 1
-
+						
 						r = ((pixel & 0x0F) * 255 / 15) & 0xff
 						g = ((pixel & 0x0F) * 255 / 15) & 0xff
 						b = ((pixel & 0x0F) * 255 / 15) & 0xff
@@ -656,7 +656,7 @@ class TPL():
 							continue
 						pixel = jar[i]
 						i += 1
-
+						
 						r = pixel
 						g = pixel
 						b = pixel
@@ -676,7 +676,7 @@ class TPL():
 							continue
 						pixel = Struct.uint16(jar[i * 2:i * 2 + 2], endian='>')
 						i += 1
-
+						
 						r = (pixel >> 8) & 0xff
 						g = (pixel >> 8) & 0xff
 						b = (pixel >> 8) & 0xff
@@ -695,7 +695,7 @@ class TPL():
 						if(y1 >= h or x1 >= w):
 							continue
 						pixel = jar[i]
-
+						
 						r = (pal[pixel] & 0xFF000000) >> 24
 						g = (pal[pixel] & 0x00FF0000) >> 16
 						b = (pal[pixel] & 0x0000FF00) >> 8
@@ -703,12 +703,12 @@ class TPL():
 
 						rgba = (r << 0) | (g << 8) | (b << 16) | (a << 24)
 						out[y1 * w + x1] = rgba
-
+						
 						if(y1 >= h or x1 >= w):
 							continue
 						pixel = jar[i]
 						i += 1
-
+						
 						r = (pal[pixel] & 0xFF000000) >> 24
 						g = (pal[pixel] & 0x00FF0000) >> 16
 						b = (pal[pixel] & 0x0000FF00) >> 8
@@ -728,7 +728,7 @@ class TPL():
 							continue
 						pixel = jar[i]
 						i += 1
-
+						
 						r = (pal[pixel] & 0xFF000000) >> 24
 						g = (pal[pixel] & 0x00FF0000) >> 16
 						b = (pal[pixel] & 0x0000FF00) >> 8
@@ -787,7 +787,7 @@ class TPL():
 							continue
 						pixel = jar[i]
 						i += 1
-
+						
 						r = (pal[pixel & 0x3FFF] & 0xFF000000) >> 24
 						g = (pal[pixel & 0x3FFF] & 0x00FF0000) >> 16
 						b = (pal[pixel & 0x3FFF] & 0x0000FF00) >> 8

@@ -3,11 +3,12 @@
 module storing a titleid dictionary
 """
 import binascii
+from PyQt4.QtCore import QT_TR_NOOP
 
-IDdict = {
-"BOOT2":"0000000100000001",
+TitleDict = {
+#"BOOT2":"0000000100000001",
 "System Menu":"0000000100000002",
-"BC":"0000000100000100",
+#"BC":"0000000100000100",
 "MIOS":"0000000100000101",
 "IOS4":"0000000100000004",
 "IOS9":"0000000100000009",
@@ -31,28 +32,37 @@ IDdict = {
 "IOS36":"0000000100000024",
 "IOS37":"0000000100000025",
 #TODO: Add remaining IOSes
-"Wii Speak Channel":"00010001484346xx",
-"Photo Channel 1.1 (Europe?)":"0001000148415axx",
-"Metroid Prime 3 Preview":"00010001484157xx",
-"Nintendo Channel":"00010001484154xx",
-"Check Mii Out / Mii Contest Channel":"00010001484150xx",
-"Everyone Votes Channel":"0001000148414axx",
-"Opera / Internet Channel":"00010001484144xx",
-"Photo Channel":"00010002-48414141",
-"Shopping Channel":"0010002-48414241",
-"Mii Channel":"001000248414341",
-"Photo Channel 1.1":"001000248415941",
-"Wii Message Board":"001000148414541",
-"Weather Channel-HAFx":"00010002484146xx",
-"Weather Channel-HAFA":"0001000248414641",
-"News Channel-HAGx":"00010002484147xx",
-"News Channel-HAGA":"0001000248414741"}
+#QT_TR_NOOP("Wii Speak Channel"):"00010001484346xx",
+#QT_TR_NOOP("Photo Channel 1.1 [USA]"):"0001000148415a45",
+QT_TR_NOOP("Photo Channel 1.1 [PAL]"):"0001000148415a50",
+#QT_TR_NOOP("Photo Channel 1.1 [JAP]"):"0001000148415a4a",
+#QT_TR_NOOP("Metroid Prime 3 Preview"):"00010001484157xx",
+QT_TR_NOOP("Nintendo Channel"):"00010001484154xx",
+QT_TR_NOOP("Check Mii Out / Mii Contest Channel[USA]"):"0001000148415045",
+QT_TR_NOOP("Check Mii Out / Mii Contest Channel[PAL]"):"0001000148415050",
+QT_TR_NOOP("Check Mii Out / Mii Contest Channel[JAP]"):"000100014841504A",
+QT_TR_NOOP("Everyone Votes Channel"):"0001000148414axx",
+#QT_TR_NOOP("Opera / Internet Channel"):"00010001484144xx",
+QT_TR_NOOP("Photo Channel"):"0001000248414141",
+QT_TR_NOOP("Shopping Channel"):"0001000248414241",
+QT_TR_NOOP("Mii Channel"):"001000248414341",
+QT_TR_NOOP("Photo Channel 1.1"):"001000248415941",
+#QT_TR_NOOP("Wii Message Board"):"001000148414541",
+#QT_TR_NOOP("Weather Channel-HAFx"):"00010002484146xx",
+#QT_TR_NOOP("Weather Channel-HAFA"):"0001000248414641",
+#QT_TR_NOOP("News Channel-HAGx"):"00010002484147xx",
+#QT_TR_NOOP("News Channel-HAGA"):"0001000248414741"
+}
+
+idDict = {}
+for title in TitleDict:
+    idDict[TitleDict[title]] = title
 
 def AsciiID(channelname):
-    return binascii.unhexlify(IDdict[channelname][7:])
+    return binascii.unhexlify(TitleDict[channelname][7:])
 
 if __name__ == "__main__":
-    print IDdict
-    print IDdict["BOOT2"]
-    print IDdict["Mii Channel"][7:]
+    print TitleDict["System Menu"]
+    print TitleDict["Mii Channel"][7:]
     print AsciiID("Mii Channel")
+    print idDict["0001000248414741"]
