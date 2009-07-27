@@ -11,9 +11,11 @@ if __name__ == "__main__":
     qttranslator = QTranslator()
     qttranslator.load(QString("qt_%1").arg(QLocale.system().name()))
     Vapp = QApplication(sys.argv)
+    Vapp.setOrganizationName("ssorgatem productions")
+    Vapp.setApplicationName("Qwad")
     Vapp.installTranslator(translator)
     Vapp.installTranslator(qttranslator)
     VentanaP = MWQwad()
     VentanaP.show()
     sys.exit(Vapp.exec_())
-#TODO: NT Port
+#TODO: TMD viewer

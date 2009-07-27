@@ -34,10 +34,10 @@ class TicketView:
 		out += "  Device type: %08X\n" % self.tikview.devicetype
 		out += "  Ticket ID: %016X\n" % self.tikview.ticketid
 		out += "  Access Mask: %04X\n" % self.tikview.accessmask
-
+		
 		return out
 
-class Ticket(WiiObject):
+class Ticket(WiiObject):	
 	"""Creates a ticket from the filename defined in f. This may take a longer amount of time than expected, as it also decrypts the title key. Now supports Korean tickets (but their title keys stay Korean on dump)."""
 	class TicketStruct(Struct):
 		__endian__ = Struct.BE
@@ -62,7 +62,7 @@ class Ticket(WiiObject):
 			self.unk4 = Struct.uint8
 	def __init__(self):
 		self.tik = self.TicketStruct()
-
+		
 		self.tik.rsaexp = 0x10001
 		self.tik.rsamod = "\x00" * 256
 		self.tik.padding1 = "\x00" * 60
@@ -72,22 +72,22 @@ class Ticket(WiiObject):
 		self.tik.titleid = 0x0000000100000000
 		self.tik.reserved = "\x00" * 80
 		self.tik.limits = "\x00" * 96
-
+		
 		commonkey = "\xEB\xE4\x2A\x22\x5E\x85\x93\xE4\x48\xD9\xC5\x45\x73\x81\xAA\xF7"
 		koreankey = "\x63\xB8\x2B\xB4\xF4\x61\x4E\x2E\x13\xF2\xFE\xFB\xBA\x4C\x9B\x7E"
-
+		
 		if(self.tik.commonkey_index == 1): #korean, kekekekek!
 			commonkey = koreankey
 		self.titlekey = Crypto().decryptTitleKey(commonkey, self.tik.titleid, self.tik.enctitlekey)
 	def _load(self, data):
 		self.tik.unpack(data[:len(self.tik)])
-
+		
 		commonkey = "\xEB\xE4\x2A\x22\x5E\x85\x93\xE4\x48\xD9\xC5\x45\x73\x81\xAA\xF7"
 		koreankey = "\x63\xB8\x2B\xB4\xF4\x61\x4E\x2E\x13\xF2\xFE\xFB\xBA\x4C\x9B\x7E"
-
+		
 		if(self.tik.commonkey_index == 1): #korean, kekekekek!
 			commonkey = koreankey
-
+		
 		self.titlekey = Crypto().decryptTitleKey(commonkey, self.tik.titleid, self.tik.enctitlekey)
 		return self
 	def getTitleKey(self):
@@ -101,7 +101,7 @@ class Ticket(WiiObject):
 		self.tik.titleid = titleid
 		commonkey = "\xEB\xE4\x2A\x22\x5E\x85\x93\xE4\x48\xD9\xC5\x45\x73\x81\xAA\xF7"
 		koreankey = "\x63\xB8\x2B\xB4\xF4\x61\x4E\x2E\x13\xF2\xFE\xFB\xBA\x4C\x9B\x7E"
-
+		
 		if(self.tik.commonkey_index == 1): #korean, kekekekek!
 			commonkey = koreankey
 		self.titlekey = Crypto().decryptTitleKey(commonkey, self.tik.titleid, self.tik.enctitlekey) #This changes the decrypted title key!
@@ -109,19 +109,19 @@ class Ticket(WiiObject):
 		out = ""
 		out += " Ticket:\n"
 		out += "  Title ID: %08x-%08x\n" % (self.getTitleID() >> 32, self.getTitleID() & 0xFFFFFFFF)
-
+	
 		out += "  Title key IV: "
 		out += hexdump(struct.pack(">Q", self.getTitleID()) + "\x00\x00\x00\x00\x00\x00\x00\x00")
 		out += "\n"
-
+	
 		out += "  Title key (encrypted): "
 		out += hexdump(self.tik.enctitlekey)
 		out += "\n"
-
+	
 		out += "  Title key (decrypted): "
 		out += hexdump(self.getTitleKey())
 		out += "\n"
-
+		
 		return out
 	def fakesign(self):
 		"""Fakesigns (or Trucha signs) and dumps the ticket to either fn, if not empty, or overwriting the source if empty. Returns the output filename."""
@@ -197,14 +197,14 @@ class TMD(WiiObject):
 		out += "  Title Version: 0x%04x\n" % self.tmd.title_version
 		out += "  Boot Index: %u\n" % self.getBootIndex()
 		out += "  Contents: \n"
-
+	
 		out += "   ID       Index Type    Size         Hash\n"
 		contents = self.getContents()
 		for i in range(len(contents)):
 			out += "   %08X %-4u  0x%04x  %#-12x " % (contents[i].cid, contents[i].index, contents[i].type, contents[i].size)
 			out += hexdump(contents[i].hash)
 			out += "\n"
-
+		
 		return out
 	def __len__(self):
 		contents = self.getContents()
@@ -216,7 +216,7 @@ class TMD(WiiObject):
 		"""Dumps the TMD to the filename specified in fn, if not empty. If that is empty, it overwrites the original. This fakesigns the TMD, but does not update the hashes and the sizes, that is left as a job for you. Returns output filename."""
 		for i in range(65536):
 			self.tmd.padding2 = i
-
+			
 			data = "" #gotta reset it every time
 			data += self.tmd.pack()
 			for i in range(self.tmd.numcontents):
@@ -231,7 +231,7 @@ class TMD(WiiObject):
 		data += self.tmd.pack()
 		for i in range(self.tmd.numcontents):
 			data += self.contents[i].pack()
-
+					
 		return data
 	def getTitleID(self):
 		"""Returns the long integer title id."""
@@ -267,48 +267,48 @@ class NUS:
 		except:
 			pass
 		os.chdir(fn)
-
+		
 		certs = ""
 		rawtmd = urllib.urlopen("http://nus.cdn.shop.wii.com/ccs/download/0000000100000002/tmd.289").read()
 		rawtik = urllib.urlopen("http://nus.cdn.shop.wii.com/ccs/download/0000000100000002/cetk").read()
-
+		
 		certs += rawtik[0x2A4:0x2A4 + 0x300] #XS
 		certs += rawtik[0x2A4 + 0x300:] #CA (tik)
 		certs += rawtmd[0x328:0x328 + 0x300] #CP
 
 		if(Crypto().createMD5HashHex(certs) != "7ff50e2733f7a6be1677b6f6c9b625dd"):
 			raise ValueError("Failed to create certs! MD5 mistatch.")
-
+		
 		open("cert", "wb").write(certs)
-
+		
 		if(self.version == None):
 			versionstring = ""
 		else:
 			versionstring = ".%u" % self.version
-
+		
 		urllib.urlretrieve(self.baseurl + "tmd" + versionstring, "tmd")
 		tmd = TMD.loadFile("tmd")
 		tmd.dumpFile("tmd") # strip certs
-
+		
 		urllib.urlretrieve(self.baseurl + "cetk", "tik")
 		tik = Ticket.loadFile("tik")
 		tik.dumpFile("tik") # strip certs
 		if(decrypt):
 			titlekey = tik.getTitleKey()
-
+		
 		contents = tmd.getContents()
 		for content in contents:
 			output = content.cid
 			if(useidx):
 				output = content.index
-
+				
 			urllib.urlretrieve(self.baseurl + ("%08x" % content.cid), "%08x.app" % output)
-
+			
 			if(decrypt):
 				data = open("%08x.app" % output, "rb").read(content.size)
 				tmpdata = Crypto().decryptContent(titlekey, content.index, data)
 				if(Crypto().validateSHAHash(tmpdata, content.hash) == 0):
 					raise ValueError("Decryption failed! SHA1 mismatch.")
 				open("%08x.app" % output, "wb").write(tmpdata)
-
+				
 		os.chdir("..")

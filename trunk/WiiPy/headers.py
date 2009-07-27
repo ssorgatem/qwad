@@ -13,10 +13,10 @@ class IMD5(WiiHeader):
 		data = self.data
 		
 		imd5 = self.IMD5Header()
-		for i in range(8):
-			imd5.zeroes[i] = 0x00
 		imd5.tag = "IMD5"
 		imd5.size = len(data)
+		for i in range(8):
+			imd5.zeroes[i] = 0x00
 		imd5.crypto = str(Crypto().createMD5Hash(data))
 		data = imd5.pack() + data
 		
