@@ -1,32 +1,93 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE TS><TS version="1.1" language="ca_ES">
+<!DOCTYPE TS>
+<TS version="2.0" language="ca_ES">
 <context>
     <name>@default</name>
     <message>
-        <location filename="wii_signer/wiiw.py" line="20"/>
-        <source>%1 not found!</source>
-        <translation type="unfinished"></translation>
+        <location filename="TitleIDs.py" line="40"/>
+        <source>Nintendo Channel</source>
+        <translation>Canal Nintendo</translation>
+    </message>
+    <message>
+        <location filename="TitleIDs.py" line="44"/>
+        <source>Everyone Votes Channel</source>
+        <translation>Canal Opiniones</translation>
+    </message>
+    <message>
+        <location filename="TitleIDs.py" line="46"/>
+        <source>Photo Channel</source>
+        <translation>Canal Fotos</translation>
+    </message>
+    <message>
+        <location filename="TitleIDs.py" line="47"/>
+        <source>Shopping Channel</source>
+        <translation>Canal Tienda</translation>
+    </message>
+    <message>
+        <location filename="TitleIDs.py" line="48"/>
+        <source>Mii Channel</source>
+        <translation>Canal Mii</translation>
+    </message>
+    <message>
+        <location filename="TitleIDs.py" line="49"/>
+        <source>Photo Channel 1.1</source>
+        <translation>Canal Fotos 1.1</translation>
+    </message>
+    <message>
+        <location filename="GUI/VenPri.py" line="43"/>
+        <source>Unknown error</source>
+        <translation>Error desconegut</translation>
+    </message>
+    <message>
+        <location filename="TitleIDs.py" line="37"/>
+        <source>Photo Channel 1.1 [PAL]</source>
+        <translation>Canal Fotos 1.1 [PAL]</translation>
+    </message>
+    <message>
+        <location filename="TitleIDs.py" line="41"/>
+        <source>Check Mii Out / Mii Contest Channel[USA]</source>
+        <translation>Canal Concursos Mii [USA]</translation>
+    </message>
+    <message>
+        <location filename="TitleIDs.py" line="42"/>
+        <source>Check Mii Out / Mii Contest Channel[PAL]</source>
+        <translation>Canal Concursos Mii [PAL]</translation>
+    </message>
+    <message>
+        <location filename="TitleIDs.py" line="43"/>
+        <source>Check Mii Out / Mii Contest Channel[JAP]</source>
+        <translation>Canal Concursos Mii [JAP]</translation>
+    </message>
+    <message>
+        <location filename="GUI/VenPri.py" line="225"/>
+        <source>Downloading files from NUS... This may take a while, please, be patient.</source>
+        <translation>Descarregant fitxers des de NUS. Això pot trigar una estona.</translation>
+    </message>
+    <message>
+        <location filename="GUI/VenPri.py" line="226"/>
+        <source>Unpacking WAD...</source>
+        <translation>Desempaquetant WAD...</translation>
+    </message>
+    <message>
+        <location filename="GUI/VenPri.py" line="227"/>
+        <source>Packing into WAD...</source>
+        <translation>Empaquetant WAD...</translation>
+    </message>
+    <message>
+        <location filename="GUI/VenPri.py" line="229"/>
+        <source>Cleaning temporary files...</source>
+        <translation>Netejant fitxers temporals...</translation>
     </message>
 </context>
 <context>
     <name>Dialog</name>
     <message>
-        <location filename="GUI/Ui_AboutWiiSigner.py" line="29"/>
-        <source>About Wii Signer</source>
-        <translation>Sobre Wii Signer</translation>
-    </message>
-    <message>
-        <location filename="GUI/AboutWiiSigner.ui" line="34"/>
-        <source>http://wiibrew.org/wiki/Wii_Signer</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="GUI/Ui_AboutQwad.py" line="53"/>
+        <location filename="GUI/Ui_AboutQwad.py" line="66"/>
         <source>Dialog</source>
         <translation>Sobre Qwad</translation>
     </message>
     <message>
-        <location filename="GUI/Ui_AboutQwad.py" line="58"/>
+        <location filename="GUI/Ui_AboutQwad.py" line="71"/>
         <source>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
 &lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
 p, li { white-space: pre-wrap; }
@@ -35,7 +96,7 @@ p, li { white-space: pre-wrap; }
         <translation></translation>
     </message>
     <message>
-        <location filename="GUI/Ui_AboutQwad.py" line="739"/>
+        <location filename="GUI/Ui_AboutQwad.py" line="752"/>
         <source>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
 &lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
 p, li { white-space: pre-wrap; }
@@ -718,146 +779,225 @@ p, li { white-space: pre-wrap; }
         <translation></translation>
     </message>
     <message>
-        <location filename="GUI/Ui_AboutQwad.py" line="740"/>
-        <source>Qwad is distributed under the following license:</source>
-        <translation>Qwad es distribueix sota la següent llicència:</translation>
-    </message>
-    <message>
-        <location filename="GUI/Ui_AboutQwad.py" line="59"/>
+        <location filename="GUI/Ui_AboutQwad.py" line="72"/>
         <source>Version</source>
         <translation>Versió</translation>
     </message>
     <message>
-        <location filename="GUI/Ui_AboutQwad.py" line="60"/>
+        <location filename="GUI/Ui_AboutQwad.py" line="73"/>
         <source>Author: </source>
         <translation>Autor:</translation>
+    </message>
+    <message>
+        <location filename="GUI/Ui_AboutQwad.py" line="753"/>
+        <source>License</source>
+        <translation>Llicència</translation>
+    </message>
+    <message>
+        <location filename="GUI/Ui_AboutQwad.py" line="755"/>
+        <source>Thanks</source>
+        <translation>Agraïments</translation>
+    </message>
+    <message>
+        <location filename="GUI/Ui_AboutQwad.py" line="754"/>
+        <source>Thanks to Wii.py team: Xuzz, SquidMan, megazig, TheLemonMan, |Omega, and Matt_P. Qwad is only a frontend for their unbelievably awesome framework.</source>
+        <translation>Agraïments a l&apos;equip de Wii.py: Xuzz, SquidMan, megazig, TheLemonMan, |Omega, i Matt_P. Qwad només es un frontend per al seu increiblement fantàstic conjunt d&apos;eines.</translation>
     </message>
 </context>
 <context>
     <name>MWQwad</name>
     <message>
-        <location filename="GUI/VenPri.py" line="26"/>
+        <location filename="GUI/VenPri.py" line="45"/>
         <source>Error</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="GUI/VenPri.py" line="28"/>
-        <source>An error has ocurred. Probably missing arguments.
-Please, see the output of stderr for more help (run Qwad from command line)</source>
-        <translation>Ha succeït un error. Probablement faltin arguments. Siusplau, mireu la sortida de la línia de comandaments per a més informació</translation>
-    </message>
-    <message>
-        <location filename="GUI/VenPri.py" line="40"/>
-        <source>Selecciona el archivo WAD</source>
-        <translation>Selecciona l&apos;arxiu WAD</translation>
-    </message>
-    <message>
-        <location filename="GUI/VenPri.py" line="84"/>
+        <location filename="GUI/VenPri.py" line="180"/>
         <source>*.wad; *.WAD</source>
         <translation></translation>
     </message>
-    <message encoding="UTF-8">
-        <location filename="GUI/VenPri.py" line="54"/>
-        <source>Selecciona dónde guardar el contenido del WAD</source>
-        <translation>Escolleix on desar el contingut del WAD</translation>
-    </message>
-    <message encoding="UTF-8">
-        <location filename="GUI/VenPri.py" line="82"/>
-        <source>Selecciona dónde guardar el nuevo WAD</source>
-        <translation>Escolleix on desar el nou WAD</translation>
-    </message>
     <message>
-        <location filename="GUI/VenPri.py" line="96"/>
-        <source>Selecciona el directorio a partir del cual crear un WAD</source>
-        <translation>Selecciona el directori a partir del qual crear un WAD</translation>
-    </message>
-    <message>
-        <location filename="GUI/VenPri.py" line="132"/>
+        <location filename="GUI/VenPri.py" line="145"/>
         <source>About Qt</source>
         <translation>Sobre Qt</translation>
+    </message>
+    <message>
+        <location filename="GUI/VenPri.py" line="59"/>
+        <source>Select WAD file</source>
+        <translation>Selecciona el fitxer WAD</translation>
+    </message>
+    <message>
+        <location filename="GUI/VenPri.py" line="73"/>
+        <source>Select where to store WAD contents</source>
+        <translation>Selecciona on desar els continguts del WAD</translation>
+    </message>
+    <message>
+        <location filename="GUI/VenPri.py" line="97"/>
+        <source>Select where to save the newly created WAD</source>
+        <translation>Selecciona on desar al nou WAD</translation>
+    </message>
+    <message>
+        <location filename="GUI/VenPri.py" line="111"/>
+        <source>Select folder to pack into WAD</source>
+        <translation>Selecciona el directori a empaquetar</translation>
+    </message>
+    <message>
+        <location filename="GUI/VenPri.py" line="27"/>
+        <source>(Latest)</source>
+        <translation>(Última)</translation>
+    </message>
+    <message>
+        <location filename="GUI/VenPri.py" line="39"/>
+        <source>Ready</source>
+        <translation>Llest</translation>
+    </message>
+    <message>
+        <location filename="GUI/VenPri.py" line="46"/>
+        <source>An error has ocurred:</source>
+        <translation>Ha succeït un error:</translation>
+    </message>
+    <message>
+        <location filename="GUI/VenPri.py" line="178"/>
+        <source>Select where to save the downloaded WAD</source>
+        <translation>Selecciona on desar el WAD descarregat</translation>
+    </message>
+    <message>
+        <location filename="GUI/VenPri.py" line="185"/>
+        <source>Select the directory where store the downloaded files</source>
+        <translation>Selecciona el directori on desar el fitxers descarregats</translation>
     </message>
 </context>
 <context>
     <name>Qwad</name>
     <message>
-        <location filename="GUI/Ui_VenPri.py" line="97"/>
-        <source>Qwad - Empaquetador y desempaquetador de WADs</source>
-        <translation>Qwad - Empaquetador i desempaquetador de WADs</translation>
-    </message>
-    <message>
-        <location filename="GUI/Ui_VenPri.py" line="103"/>
-        <source>Desempaquetar</source>
-        <translation>Desempaquetar</translation>
-    </message>
-    <message>
-        <location filename="GUI/Ui_VenPri.py" line="98"/>
+        <location filename="GUI/Ui_VenPri.py" line="141"/>
         <source>Ruta hacia el archivo WAD que quieres desempaquetar</source>
         <translation>Camí fins l&apos;arxiu WAD a desempaquetar</translation>
     </message>
     <message>
-        <location filename="GUI/Ui_VenPri.py" line="99"/>
-        <source>Archivo WAD</source>
-        <translation>Arxiu WAD</translation>
-    </message>
-    <message>
-        <location filename="GUI/Ui_VenPri.py" line="100"/>
+        <location filename="GUI/Ui_VenPri.py" line="143"/>
         <source>Carpeta donde se almacenaran los contenidos del archivo WAD</source>
         <translation>Carpeta on s&apos;enmagatzemaran els continguts de l&apos;arxiu WAD</translation>
     </message>
     <message>
-        <location filename="GUI/Ui_VenPri.py" line="107"/>
-        <source>Destino</source>
-        <translation>Destí</translation>
-    </message>
-    <message>
-        <location filename="GUI/Ui_VenPri.py" line="111"/>
-        <source>Empaquetar</source>
-        <translation>Empaquetar</translation>
-    </message>
-    <message encoding="UTF-8">
-        <location filename="GUI/Ui_VenPri.py" line="104"/>
-        <source>Sólo necesario en caso de que hayas modificado el WAD original</source>
-        <translation>Només necessari en cas que hagis modificat el WAD original</translation>
-    </message>
-    <message>
-        <location filename="GUI/Ui_VenPri.py" line="105"/>
-        <source>Actualizar TMD</source>
-        <translation>Actualitzar TMD</translation>
-    </message>
-    <message>
-        <location filename="GUI/Ui_VenPri.py" line="106"/>
+        <location filename="GUI/Ui_VenPri.py" line="154"/>
         <source>Carpeta y nombre del nuevo WAD</source>
         <translation>Carpeta i nom del nou WAD</translation>
     </message>
     <message>
-        <location filename="GUI/Ui_VenPri.py" line="108"/>
+        <location filename="GUI/Ui_VenPri.py" line="149"/>
         <source>Ruta hacia la carpeta que empaquetar en WAD</source>
         <translation>Camí fins la carpeta a partir de la qual fer un WAD</translation>
     </message>
     <message>
-        <location filename="GUI/Ui_VenPri.py" line="109"/>
-        <source>Carpeta</source>
-        <translation>Carpeta</translation>
-    </message>
-    <message>
-        <location filename="GUI/Ui_VenPri.py" line="112"/>
-        <source>Ayuda</source>
-        <translation>Ajuda</translation>
-    </message>
-    <message>
-        <location filename="GUI/Ui_VenPri.py" line="113"/>
-        <source>Acerca de Qwad</source>
-        <translation>Sobre Qwad</translation>
-    </message>
-    <message>
-        <location filename="GUI/Ui_VenPri.py" line="114"/>
+        <location filename="GUI/Ui_VenPri.py" line="167"/>
         <source>About Qt</source>
         <translation>Sobre Qt</translation>
     </message>
     <message>
-        <location filename="GUI/Ui_VenPri.py" line="115"/>
+        <location filename="GUI/Ui_VenPri.py" line="168"/>
         <source>About Wii Signer</source>
         <translation>Sobre Wii Signer</translation>
+    </message>
+    <message>
+        <location filename="GUI/Ui_VenPri.py" line="146"/>
+        <source>Unpack WAD</source>
+        <translation>Desempaqueta WAD</translation>
+    </message>
+    <message>
+        <location filename="GUI/Ui_VenPri.py" line="142"/>
+        <source>WAD file</source>
+        <translation>Arxiu WAD</translation>
+    </message>
+    <message>
+        <location filename="GUI/Ui_VenPri.py" line="155"/>
+        <source>Output</source>
+        <translation>Destí</translation>
+    </message>
+    <message>
+        <location filename="GUI/Ui_VenPri.py" line="145"/>
+        <source>Unpack</source>
+        <translation>Desempaqueta</translation>
+    </message>
+    <message>
+        <location filename="GUI/Ui_VenPri.py" line="152"/>
+        <source>Pack WAD</source>
+        <translation>Empaqueta el WAD</translation>
+    </message>
+    <message>
+        <location filename="GUI/Ui_VenPri.py" line="150"/>
+        <source>Folder</source>
+        <translation>Carpeta</translation>
+    </message>
+    <message>
+        <location filename="GUI/Ui_VenPri.py" line="151"/>
+        <source>Pack</source>
+        <translation>Empaqueta</translation>
+    </message>
+    <message>
+        <location filename="GUI/Ui_VenPri.py" line="165"/>
+        <source>Help</source>
+        <translation>Ajuda</translation>
+    </message>
+    <message>
+        <location filename="GUI/Ui_VenPri.py" line="166"/>
+        <source>About Qwad</source>
+        <translation>Sobre Qwad</translation>
+    </message>
+    <message>
+        <location filename="GUI/Ui_VenPri.py" line="140"/>
+        <source>Qwad - a WAD management tool</source>
+        <translation>Qwad - una eina per a WADs</translation>
+    </message>
+    <message>
+        <location filename="GUI/Ui_VenPri.py" line="164"/>
+        <source>Download from NUS</source>
+        <translation>Descarrega des de NUS</translation>
+    </message>
+    <message>
+        <location filename="GUI/Ui_VenPri.py" line="153"/>
+        <source>Download</source>
+        <translation>Descarrega</translation>
+    </message>
+    <message>
+        <location filename="GUI/Ui_VenPri.py" line="156"/>
+        <source>000000000000000000</source>
+        <translation></translation>
+    </message>
+    <message>
+        <location filename="GUI/Ui_VenPri.py" line="157"/>
+        <source>Title ID</source>
+        <translation>ID del títol</translation>
+    </message>
+    <message>
+        <location filename="GUI/Ui_VenPri.py" line="158"/>
+        <source>Choose title:</source>
+        <translation>Escull títol:</translation>
+    </message>
+    <message>
+        <location filename="GUI/Ui_VenPri.py" line="159"/>
+        <source>Custom title ID</source>
+        <translation>Altra ID de títol</translation>
+    </message>
+    <message>
+        <location filename="GUI/Ui_VenPri.py" line="160"/>
+        <source>Decrypt</source>
+        <translation>Desencriptar</translation>
+    </message>
+    <message>
+        <location filename="GUI/Ui_VenPri.py" line="161"/>
+        <source>Pack into WAD</source>
+        <translation>Empaquetar en WAD</translation>
+    </message>
+    <message>
+        <location filename="GUI/Ui_VenPri.py" line="162"/>
+        <source>unset</source>
+        <translation></translation>
+    </message>
+    <message>
+        <location filename="GUI/Ui_VenPri.py" line="163"/>
+        <source>Version:</source>
+        <translation>Versió:</translation>
     </message>
 </context>
 </TS>

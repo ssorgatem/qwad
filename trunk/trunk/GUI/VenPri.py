@@ -5,7 +5,7 @@ Module implementing Qwad's main window
 from PyQt4.QtGui import QMainWindow,QFileDialog,QMessageBox, QLabel
 from PyQt4.QtCore import pyqtSignature,QString,QT_TR_NOOP,SIGNAL,QObject
 from WiiPy.archive import WAD
-from WiiPy.title import NUS
+from WiiPy.title import NUS, TMD
 from Ui_VenPri import Ui_Qwad
 from shutil import rmtree
 from threading import Thread
@@ -26,8 +26,10 @@ class MWQwad(QMainWindow, Ui_Qwad):
         self.setupUi(self)
         self.defaultversion = self.trUtf8("""(Latest)""")
         self.VersionlineEdit.setText(self.defaultversion)
-        for key in sorted(TitleIDs.TitleDict.keys()):
+        for key in sorted(TitleIDs.TitleDict):
             self.comboBox.addItem(key)
+        for ios in sorted(TitleIDs.IOSdict):
+            self.IOSversion.addItem(ios)
         self.getReady()
 
     def Status(self,status):
@@ -43,13 +45,29 @@ class MWQwad(QMainWindow, Ui_Qwad):
 
 
     def ErrorDiag(self, error = QT_TR_NOOP("Unknown error")):
+            print error
             QMessageBox.critical(None,
                 self.trUtf8("Error"),
                 self.trUtf8("""An error has ocurred:""") +" " + str(error),
                 QMessageBox.StandardButtons(\
                 QMessageBox.Ok),
                 QMessageBox.Ok)
-            print error
+
+    def loadTMD(self,tmdpath):#TODO: TMD viewer
+        """
+        Displays _TMD information in the UI
+        """
+        tmd = TMD().loadFile(tmdpath)
+        self.TitleID.setText("%016x" % tmd.tmd.titleid)
+#        print tmd.tmd.version
+        #self.IOSversion.setText("%016x" % tmd.tmd.iosversion)
+        self.TitleType.setText(str(tmd.tmd.title_type))
+        self.GroupID.setText(str(tmd.tmd.group_id))
+#        print tmd.tmd.reserved
+        self.AccessRights.setText(str(tmd.tmd.access_rights))
+        self.Version.setText(str(tmd.tmd.title_version))
+        self.Contents.setText(str(tmd.tmd.numcontents))
+        self.BootIndex.setText(str(tmd.tmd.boot_index))
 
     @pyqtSignature("")
     def on_BotonRutaWad_clicked(self):
@@ -159,11 +177,8 @@ class MWQwad(QMainWindow, Ui_Qwad):
             else:
                 version = str(version)
                 print "downloading version " + version
-#            if self.pack_in_WAD_checkbox.isChecked():
-#                outputdir = tempfile.gettempdir() + "/NUS_" #+ time.asctime().replace(",","").replace(" ","").replace(":","") # A safe place for temporary files
-#            else:
             outputdir = str(self.NusOutputPath.text())
-            self.nusdow = nusDownloading(int(str(self.enteredTitleID.text()),16), version, outputdir,  self.decryptCheck.isChecked(), self)
+            self.nusdow = nusDownloading(int(str(self.enteredTitleID.text()).lower(),16), version, outputdir,  self.decryptCheck.isChecked(), self)
             self.nusdow.start()
         except Exception, e:
             self.ErrorDiag(e)
@@ -221,12 +236,30 @@ class MWQwad(QMainWindow, Ui_Qwad):
             print "OMG, what are you doing?"
         else:
             print "This is the end of the world. For PyQt4, at least"
-#Statusbar messages
-#FIXME: Why don't they get translated? It's frustrating
-DOWNLOADING = QT_TR_NOOP("Downloading files from NUS... This may take a while, please, be patient.")
-UNPACKING = QT_TR_NOOP("Unpacking WAD...")
-PACKING = QT_TR_NOOP("Packing into WAD...")
-CLEANING = QT_TR_NOOP("Cleaning temporary files...")
+
+    @pyqtSignature("")
+    def on_TMDfilepath_returnPressed(self):
+        """
+        Trigger loadTMD
+        """
+        self.loadTMD(str(self.TMDfilepath.text()))
+
+    @pyqtSignature("")
+    def on_TMDfilebutton_clicked(self):
+        """
+        Trigger loadTMD
+        """
+        tmdpath = QFileDialog.getOpenFileName(\
+            None,
+            self.trUtf8("Select a TMD file"),
+            QString(),
+            self.trUtf8("tmd; TMD"),
+            None,
+            QFileDialog.Options(QFileDialog.DontResolveSymlinks))
+        if tmdpath != "":
+            self.TMDfilepath.setText(tmdpath)
+            self.loadTMD(str(tmdpath))
+
 #Here useful thread classes
 class Unpacking(Thread):
     def __init__(self, wadpath, dirpath, QMW):
@@ -295,3 +328,10 @@ class nusDownloading(Unpacking):
             Errormsg = str(e) + ". " +  QT_TR_NOOP(QString("Title %1 version %2 maybe isn't available for download on NUS.").arg(str(self.titleid)).arg(str(self.version)))
             self.qobject.emit(SIGNAL("Exception"),Errormsg)
             self.qobject.emit(SIGNAL("Done"))
+
+#Statusbar messages
+#FIXME: Why don't they get translated? It's frustrating
+DOWNLOADING = QT_TR_NOOP("Downloading files from NUS... This may take a while, please, be patient.")
+UNPACKING = QT_TR_NOOP("Unpacking WAD...")
+PACKING = QT_TR_NOOP("Packing into WAD...")
+CLEANING = QT_TR_NOOP("Cleaning temporary files...")

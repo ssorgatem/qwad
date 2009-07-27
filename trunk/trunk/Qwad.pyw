@@ -18,4 +18,4 @@ if __name__ == "__main__":
     VentanaP = MWQwad()
     VentanaP.show()
     sys.exit(Vapp.exec_())
-#TODO: TMD viewer
+
